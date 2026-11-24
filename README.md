@@ -13,7 +13,9 @@ npm ci
 npm run dev
 ```
 
-`npm run verify` 執行型別檢查與靜態建置，完成後可用 `npm run preview` 預覽。登入 Wrangler 後，可用 `npm run deploy` 建置並部署。
+`npm run verify` 執行型別檢查與靜態建置，完成後可用 `npm run preview` 預覽。
+
+推送到 `main` 時，Cloudflare Workers Builds 會執行 `npm run verify`，通過後自動部署。
 
 ## 頁面與互動
 
