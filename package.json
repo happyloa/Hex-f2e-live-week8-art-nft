@@ -1,0 +1,41 @@
+{
+  "name": "hex-f2e-live-week8-art-nft",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "nuxt dev",
+    "check": "nuxt typecheck",
+    "build": "nuxt generate",
+    "verify": "npm run check && npm run build",
+    "preview": "wrangler dev",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "dependencies": {
+    "@fontsource-variable/noto-sans-tc": "^5.2.0",
+    "@fontsource/paytone-one": "^5.2.0",
+    "@fontsource/squada-one": "^5.2.0",
+    "@lucide/vue": "^1.77.0",
+    "masonry-layout": "^4.2.2",
+    "nuxt": "^4.6.4",
+    "swiper": "^14.4.0",
+    "vue": "^3.5.0",
+    "vue-router": "^5.5.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "@types/masonry-layout": "^4.2.0",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^6.0.3",
+    "vue-tsc": "^3.2.0",
+    "wrangler": "^4.166.0"
+  },
+  "overrides": {
+    "readdir-glob": {
+      "minimatch": "^11.0.9"
+    }
+  }
+}

@@ -1,0 +1,358 @@
+{
+  "art01": {
+    "src": "/images/art01.webp",
+    "width": 1440,
+    "height": 960,
+    "variants": {
+      "480": "/images/art01-480.webp",
+      "960": "/images/art01-960.webp",
+      "1440": "/images/art01.webp"
+    }
+  },
+  "art02": {
+    "src": "/images/art02.webp",
+    "width": 1440,
+    "height": 1440,
+    "variants": {
+      "480": "/images/art02-480.webp",
+      "960": "/images/art02-960.webp",
+      "1440": "/images/art02.webp"
+    }
+  },
+  "art03": {
+    "src": "/images/art03.webp",
+    "width": 660,
+    "height": 409,
+    "variants": {
+      "480": "/images/art03-480.webp",
+      "660": "/images/art03.webp"
+    }
+  },
+  "art04": {
+    "src": "/images/art04.webp",
+    "width": 660,
+    "height": 843,
+    "variants": {
+      "480": "/images/art04-480.webp",
+      "660": "/images/art04.webp"
+    }
+  },
+  "art05": {
+    "src": "/images/art05.webp",
+    "width": 1440,
+    "height": 961,
+    "variants": {
+      "480": "/images/art05-480.webp",
+      "960": "/images/art05-960.webp",
+      "1440": "/images/art05.webp"
+    }
+  },
+  "art06": {
+    "src": "/images/art06.webp",
+    "width": 660,
+    "height": 794,
+    "variants": {
+      "480": "/images/art06-480.webp",
+      "660": "/images/art06.webp"
+    }
+  },
+  "art07": {
+    "src": "/images/art07.webp",
+    "width": 660,
+    "height": 874,
+    "variants": {
+      "480": "/images/art07-480.webp",
+      "660": "/images/art07.webp"
+    }
+  },
+  "art08": {
+    "src": "/images/art08.webp",
+    "width": 660,
+    "height": 880,
+    "variants": {
+      "480": "/images/art08-480.webp",
+      "660": "/images/art08.webp"
+    }
+  },
+  "art09": {
+    "src": "/images/art09.webp",
+    "width": 1440,
+    "height": 960,
+    "variants": {
+      "480": "/images/art09-480.webp",
+      "960": "/images/art09-960.webp",
+      "1440": "/images/art09.webp"
+    }
+  },
+  "art10": {
+    "src": "/images/art10.webp",
+    "width": 1440,
+    "height": 1080,
+    "variants": {
+      "480": "/images/art10-480.webp",
+      "960": "/images/art10-960.webp",
+      "1440": "/images/art10.webp"
+    }
+  },
+  "art11": {
+    "src": "/images/art11.webp",
+    "width": 1440,
+    "height": 960,
+    "variants": {
+      "480": "/images/art11-480.webp",
+      "960": "/images/art11-960.webp",
+      "1440": "/images/art11.webp"
+    }
+  },
+  "art12": {
+    "src": "/images/art12.webp",
+    "width": 1440,
+    "height": 960,
+    "variants": {
+      "480": "/images/art12-480.webp",
+      "960": "/images/art12-960.webp",
+      "1440": "/images/art12.webp"
+    }
+  },
+  "art13": {
+    "src": "/images/art13.webp",
+    "width": 1440,
+    "height": 1700,
+    "variants": {
+      "480": "/images/art13-480.webp",
+      "960": "/images/art13-960.webp",
+      "1440": "/images/art13.webp"
+    }
+  },
+  "art14": {
+    "src": "/images/art14.webp",
+    "width": 660,
+    "height": 905,
+    "variants": {
+      "480": "/images/art14-480.webp",
+      "660": "/images/art14.webp"
+    }
+  },
+  "art15": {
+    "src": "/images/art15.webp",
+    "width": 660,
+    "height": 842,
+    "variants": {
+      "480": "/images/art15-480.webp",
+      "660": "/images/art15.webp"
+    }
+  },
+  "art16": {
+    "src": "/images/art16.webp",
+    "width": 660,
+    "height": 495,
+    "variants": {
+      "480": "/images/art16-480.webp",
+      "660": "/images/art16.webp"
+    }
+  },
+  "art17": {
+    "src": "/images/art17.webp",
+    "width": 660,
+    "height": 895,
+    "variants": {
+      "480": "/images/art17-480.webp",
+      "660": "/images/art17.webp"
+    }
+  },
+  "art19": {
+    "src": "/images/art19.webp",
+    "width": 810,
+    "height": 1000,
+    "variants": {
+      "480": "/images/art19-480.webp",
+      "810": "/images/art19.webp"
+    }
+  },
+  "art20": {
+    "src": "/images/art20.webp",
+    "width": 1440,
+    "height": 1642,
+    "variants": {
+      "480": "/images/art20-480.webp",
+      "960": "/images/art20-960.webp",
+      "1440": "/images/art20.webp"
+    }
+  },
+  "art21": {
+    "src": "/images/art21.webp",
+    "width": 1440,
+    "height": 1846,
+    "variants": {
+      "480": "/images/art21-480.webp",
+      "960": "/images/art21-960.webp",
+      "1440": "/images/art21.webp"
+    }
+  },
+  "art22": {
+    "src": "/images/art22.webp",
+    "width": 1440,
+    "height": 2156,
+    "variants": {
+      "480": "/images/art22-480.webp",
+      "960": "/images/art22-960.webp",
+      "1440": "/images/art22.webp"
+    }
+  },
+  "art23": {
+    "src": "/images/art23.webp",
+    "width": 640,
+    "height": 797,
+    "variants": {
+      "480": "/images/art23-480.webp",
+      "640": "/images/art23.webp"
+    }
+  },
+  "art24": {
+    "src": "/images/art24.webp",
+    "width": 640,
+    "height": 964,
+    "variants": {
+      "480": "/images/art24-480.webp",
+      "640": "/images/art24.webp"
+    }
+  },
+  "art25": {
+    "src": "/images/art25.webp",
+    "width": 640,
+    "height": 956,
+    "variants": {
+      "480": "/images/art25-480.webp",
+      "640": "/images/art25.webp"
+    }
+  },
+  "art26": {
+    "src": "/images/art26.webp",
+    "width": 1440,
+    "height": 2177,
+    "variants": {
+      "480": "/images/art26-480.webp",
+      "960": "/images/art26-960.webp",
+      "1440": "/images/art26.webp"
+    }
+  },
+  "art27": {
+    "src": "/images/art27.webp",
+    "width": 1440,
+    "height": 1254,
+    "variants": {
+      "480": "/images/art27-480.webp",
+      "960": "/images/art27-960.webp",
+      "1440": "/images/art27.webp"
+    }
+  },
+  "art28": {
+    "src": "/images/art28.webp",
+    "width": 660,
+    "height": 990,
+    "variants": {
+      "480": "/images/art28-480.webp",
+      "660": "/images/art28.webp"
+    }
+  },
+  "art29": {
+    "src": "/images/art29.webp",
+    "width": 660,
+    "height": 760,
+    "variants": {
+      "480": "/images/art29-480.webp",
+      "660": "/images/art29.webp"
+    }
+  },
+  "art30": {
+    "src": "/images/art30.webp",
+    "width": 660,
+    "height": 831,
+    "variants": {
+      "480": "/images/art30-480.webp",
+      "660": "/images/art30.webp"
+    }
+  },
+  "artist01": {
+    "src": "/images/artist01.webp",
+    "width": 1200,
+    "height": 800,
+    "variants": {
+      "480": "/images/artist01-480.webp",
+      "960": "/images/artist01-960.webp",
+      "1200": "/images/artist01.webp"
+    }
+  },
+  "artist02": {
+    "src": "/images/artist02.webp",
+    "width": 1200,
+    "height": 800,
+    "variants": {
+      "480": "/images/artist02-480.webp",
+      "960": "/images/artist02-960.webp",
+      "1200": "/images/artist02.webp"
+    }
+  },
+  "artist03": {
+    "src": "/images/artist03.webp",
+    "width": 1200,
+    "height": 1800,
+    "variants": {
+      "480": "/images/artist03-480.webp",
+      "960": "/images/artist03-960.webp",
+      "1200": "/images/artist03.webp"
+    }
+  },
+  "artist04": {
+    "src": "/images/artist04.webp",
+    "width": 660,
+    "height": 440,
+    "variants": {
+      "480": "/images/artist04-480.webp",
+      "660": "/images/artist04.webp"
+    }
+  },
+  "artist05": {
+    "src": "/images/artist05.webp",
+    "width": 1200,
+    "height": 800,
+    "variants": {
+      "480": "/images/artist05-480.webp",
+      "960": "/images/artist05-960.webp",
+      "1200": "/images/artist05.webp"
+    }
+  },
+  "the-new-york-public-library-vBejyCBXZBY-unsplash": {
+    "src": "/images/the-new-york-public-library-vBejyCBXZBY-unsplash.webp",
+    "width": 660,
+    "height": 818,
+    "variants": {
+      "480": "/images/the-new-york-public-library-vBejyCBXZBY-unsplash-480.webp",
+      "660": "/images/the-new-york-public-library-vBejyCBXZBY-unsplash.webp"
+    }
+  },
+  "user01": {
+    "src": "/images/user01.webp",
+    "width": 320,
+    "height": 480,
+    "variants": {
+      "320": "/images/user01.webp"
+    }
+  },
+  "user02": {
+    "src": "/images/user02.webp",
+    "width": 320,
+    "height": 414,
+    "variants": {
+      "320": "/images/user02.webp"
+    }
+  },
+  "user03": {
+    "src": "/images/user03.webp",
+    "width": 320,
+    "height": 432,
+    "variants": {
+      "320": "/images/user03.webp"
+    }
+  }
+}
