@@ -3,6 +3,7 @@ import { birdColors, birdTypes, networks, statuses } from "~/data/catalog";
 import type { Filters } from "~/data/filters";
 
 const filters = defineModel<Filters>({ required: true });
+defineProps<{ showBirdTraits: boolean }>();
 </script>
 
 <template>
@@ -52,7 +53,7 @@ const filters = defineModel<Filters>({ required: true });
         <span class="font-display">ETH</span>
       </div>
     </details>
-    <details open>
+    <details v-if="showBirdTraits" open>
       <summary>屬性</summary>
       <p class="my-2 font-bold">品種</p>
       <label v-for="species in birdTypes" :key="species" class="check-option">

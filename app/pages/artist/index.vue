@@ -23,7 +23,7 @@ useHead({ title: "藝術家" });
           />
           <div class="p-5">
             <h2 class="font-display text-3xl">{{ artist.name }}</h2>
-            <p class="mt-2">{{ artist.bio }}</p>
+            <p v-if="artist.bio" class="mt-2">{{ artist.bio }}</p>
           </div>
         </NuxtLink>
       </article>

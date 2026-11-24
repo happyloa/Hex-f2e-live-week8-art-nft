@@ -17,7 +17,9 @@ if (!artwork)
   throw createError({ statusCode: 404, statusMessage: "找不到藝術品" });
 
 const artist = getArtist(artwork.artist)!;
-const collection = getCollection(artwork.collection)!;
+const collection = artwork.collection
+  ? getCollection(artwork.collection)
+  : undefined;
 useHead({
   title: artwork.title,
   meta: [{ name: "description", content: artwork.description }],
@@ -39,12 +41,15 @@ const offers = [
   { price: 0.056, term: "2 週後", avatar: "artist03" },
   { price: 0.044, term: "2 週後", avatar: "user03" },
 ];
-const attributes = [
-  { name: "品種", value: artwork.species },
-  { name: "鳥的數量", value: `${artwork.birds} 隻` },
-  { name: "是否有花草", value: artwork.flowers ? "是" : "否" },
-  { name: "鳥的顏色", value: artwork.color },
-];
+const attributes =
+  collection?.id === "birds"
+    ? [
+        { name: "品種", value: artwork.species },
+        { name: "鳥的數量", value: `${artwork.birds} 隻` },
+        { name: "是否有花草", value: artwork.flowers ? "是" : "否" },
+        { name: "鳥的顏色", value: artwork.color },
+      ]
+    : [{ name: "刊登狀態", value: artwork.status }];
 const info = [
   { name: "擁有者", value: "0xa543x…1283" },
   { name: "代幣 ID", value: "#1234" },
@@ -59,9 +64,15 @@ const related =
     : [
         ...artworks.filter(
           (item) =>
-            item.id !== artwork.id && item.collection === artwork.collection,
+            item.id !== artwork.id &&
+            collection &&
+            item.collection === collection.id,
         ),
-        ...artworks.filter((item) => item.collection !== artwork.collection),
+        ...artworks.filter(
+          (item) =>
+            item.id !== artwork.id &&
+            (!collection || item.collection !== collection.id),
+        ),
       ].slice(0, 4);
 
 function startBid() {
@@ -147,6 +158,7 @@ function submitBid() {
         <div class="border-t border-ink p-5 md:p-8">
           <p class="leading-7">{{ artwork.description }}</p>
           <NuxtLink
+            v-if="collection"
             :to="collectionPath(collection.id)"
             class="mt-4 inline-block font-bold underline underline-offset-4"
             >查看系列：{{ collection.name }}</NuxtLink
@@ -242,11 +254,11 @@ function submitBid() {
         </table>
       </details>
     </section>
-    <section class="site-section">
+    <section v-reveal class="site-section">
       <SectionRail
         english="Other"
         label="其餘作品"
-        :href="collectionPath(collection.id)"
+        :href="collection ? collectionPath(collection.id) : '/explore'"
       />
       <ArtGallery :items="related" />
     </section>

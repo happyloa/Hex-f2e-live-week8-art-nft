@@ -29,16 +29,23 @@ function number(value: unknown) {
   return value && Number.isFinite(parsed) && parsed >= 0 ? parsed : "";
 }
 
-export function readFilters(query: Record<string, unknown>): Filters {
+export function readFilters(
+  query: Record<string, unknown>,
+  showBirdTraits = true,
+): Filters {
   return {
     network: choices(query.network, networks),
     status: choices(query.status, statuses),
-    species: choices(query.species, birdTypes),
+    species: showBirdTraits ? choices(query.species, birdTypes) : [],
     min: number(query.min),
     max: number(query.max),
-    birds: choices(query.birds, ["1", "2", "3", "4"])[0] ?? "",
-    flowers: choices(query.flowers, ["yes", "no"])[0] ?? "",
-    color: choices(query.color, birdColors)[0] ?? "",
+    birds: showBirdTraits
+      ? (choices(query.birds, ["1", "2", "3", "4"])[0] ?? "")
+      : "",
+    flowers: showBirdTraits
+      ? (choices(query.flowers, ["yes", "no"])[0] ?? "")
+      : "",
+    color: showBirdTraits ? (choices(query.color, birdColors)[0] ?? "") : "",
   };
 }
 

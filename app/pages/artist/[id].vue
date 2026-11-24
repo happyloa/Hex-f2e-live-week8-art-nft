@@ -21,6 +21,9 @@ const showCollection = computed(
   () => queryText(route.query.tab) === "collection",
 );
 const stats = ["販售中", "地板價格", "7 日成交", "30 日成交"];
+const individualWorks = artworks.filter(
+  (item) => item.artist === artist.id && !item.collection,
+);
 const series = collections
   .filter((item) => item.artist === artist.id)
   .sort((a, b) => (a.id === "flowers" ? -1 : b.id === "flowers" ? 1 : 0))
@@ -33,15 +36,21 @@ const series = collections
 const collected =
   artist.id === "michael"
     ? latestIds.map((id) => getArtwork(id)!)
-    : artworks.filter((item) => item.artist !== artist.id).slice(0, 8);
+    : artist.stats
+      ? artworks.filter((item) => item.artist !== artist.id).slice(0, 8)
+      : [];
 </script>
 
 <template>
   <div class="site-shell page-space">
-    <section class="artist-profile" aria-labelledby="artist-title">
+    <section
+      class="artist-profile"
+      :class="{ 'without-stats': !artist.stats }"
+      aria-labelledby="artist-title"
+    >
       <ArtPicture
         :name="artist.image"
-        :alt="artist.name"
+        :alt="artist.stats ? artist.name : ''"
         priority
         class="panel h-full min-h-60 w-full object-cover"
         sizes="(min-width: 1024px) 416px, 100vw"
@@ -50,10 +59,13 @@ const collected =
         <h1 id="artist-title" class="font-display text-5xl md:text-6xl">
           {{ artist.name }}
         </h1>
-        <p class="mt-3 font-display text-lg">{{ artist.address }}</p>
-        <p class="mt-4 leading-7">{{ artist.bio }}</p>
+        <p v-if="artist.address" class="mt-3 font-display text-lg">
+          {{ artist.address }}
+        </p>
+        <p v-if="artist.bio" class="mt-4 leading-7">{{ artist.bio }}</p>
       </div>
       <dl
+        v-if="artist.stats"
         class="panel grid grid-cols-2 divide-x divide-y divide-ink text-center"
       >
         <div
@@ -63,7 +75,7 @@ const collected =
         >
           <dt class="text-sm font-bold">{{ label }}</dt>
           <dd class="font-display text-2xl">
-            {{ artist.stats[index] }}
+            {{ artist.stats?.[index] }}
             <span v-if="index" class="text-sm">ETH</span>
           </dd>
         </div>
@@ -86,10 +98,22 @@ const collected =
       >
     </nav>
     <ArtGallery
-      v-if="showCollection"
+      v-if="showCollection && collected.length"
       :items="collected"
       class="mt-6 md:mt-10"
     />
+    <div v-else-if="showCollection" class="panel mt-6 p-6 text-center">
+      <p>目前沒有收藏品。</p>
+      <NuxtLink to="/explore" class="more mt-4">探索作品</NuxtLink>
+    </div>
+    <section
+      v-else-if="individualWorks.length"
+      class="mt-6 md:mt-10"
+      aria-labelledby="individual-works"
+    >
+      <h2 id="individual-works" class="mb-4 text-xl font-bold">作品</h2>
+      <ArtGallery :items="individualWorks" />
+    </section>
     <section
       v-else
       class="mt-6 grid gap-8 md:mt-10 md:gap-14"
@@ -98,6 +122,7 @@ const collected =
       <article
         v-for="item in series"
         :key="item.id"
+        v-reveal
         class="panel series-card relative p-5 lg:p-8"
       >
         <div class="flex flex-wrap items-end justify-between gap-4">
@@ -185,6 +210,9 @@ const collected =
   .artist-profile > dl {
     margin-left: 24px;
     border-top: 1px solid;
+  }
+  .artist-profile.without-stats {
+    grid-template-columns: minmax(0, 416fr) minmax(0, 880fr);
   }
   .artist-tab {
     padding-inline: 24px;

@@ -39,6 +39,38 @@ export const artists = [
     address: "0x9c83d1…67ab",
     stats: ["76", "0.7", "5.2", "18.2"],
   },
+  {
+    id: "yui",
+    name: "Yui",
+    image: "art05",
+    bio: "",
+    address: "",
+    stats: null,
+  },
+  {
+    id: "bug-lin",
+    name: "Bug Lin",
+    image: "art06",
+    bio: "",
+    address: "",
+    stats: null,
+  },
+  {
+    id: "wei-jj",
+    name: "Wei JJ",
+    image: "art07",
+    bio: "",
+    address: "",
+    stats: null,
+  },
+  {
+    id: "even-lai",
+    name: "Even Lai",
+    image: "art08",
+    bio: "",
+    address: "",
+    stats: null,
+  },
 ] as const;
 
 export type Artist = (typeof artists)[number];
@@ -85,7 +117,7 @@ export const collections: Collection[] = [
   },
   {
     id: "nature",
-    name: "夏天的時候",
+    name: "夏日風景",
     artist: "antony-wu",
     description: "季節的光線掠過山水與林間，將逐漸改變的自然留在畫布上。",
     stats: ["920", "610", "780", "0.9"],
@@ -114,7 +146,7 @@ interface Artwork {
   id: string;
   title: string;
   image: string;
-  collection: string;
+  collection: string | null;
   artist: ArtistId;
   description: string;
   price: number;
@@ -132,6 +164,7 @@ type ArtworkSeed = [
   image: string,
   collection: string,
   description?: string,
+  creator?: ArtistId,
 ];
 const artworkSeeds: ArtworkSeed[] = [
   [
@@ -156,11 +189,39 @@ const artworkSeeds: ArtworkSeed[] = [
     "家門前每天都有不同的小鳥，大多數的小鳥都有特殊能力，特殊能力是什麼我就不說了，希望大家能從作品感受到小鳥的快樂。",
   ],
   ["woman-on-a-walk", "散步遇到的女人", "art04", "walk"],
-  ["sculpted-mother", "爆炸頭的母親", "art05", "gaze"],
-  ["summer-days", "夏天的時候", "art06", "nature"],
+  [
+    "sculpted-mother",
+    "爆炸頭的母親",
+    "art05",
+    "gaze",
+    "灰階光影中的人物雕像。",
+    "yui",
+  ],
+  [
+    "summer-days",
+    "夏天的時候",
+    "art06",
+    "nature",
+    "一幅以樹葉與夏日色彩為主題的插畫。",
+    "bug-lin",
+  ],
   ["flowers-from-a-suitor", "追求者送我的花", "art29", "flowers"],
-  ["fish-today", "今天釣到的魚", "art07", "nature"],
-  ["cats-in-life", "人生中的貓咪們", "art08", "walk"],
+  [
+    "fish-today",
+    "今天釣到的魚",
+    "art07",
+    "nature",
+    "一張描繪不同魚種的圖畫。",
+    "wei-jj",
+  ],
+  [
+    "cats-in-life",
+    "人生中的貓咪們",
+    "art08",
+    "walk",
+    "以鮮明水彩描繪貓咪的神情。",
+    "even-lai",
+  ],
   ["private-life", "區塊戀-他的私生活", "art09", "gaze"],
   ["tears-like-pearls", "不哭不哭眼淚是珍珠", "art12", "gaze"],
   [
@@ -193,7 +254,12 @@ const artworkSeeds: ArtworkSeed[] = [
   ["warm-wind", "每當夏天我吹著溫暖的風", "art06", "nature"],
   ["eat-vegetables", "心如止水——今天吃素", "art15", "flowers"],
   ["sleeping-in", "賴床真的很不好", "art03", "walk"],
-  ["flower-letter", "收到的信", "the-new-york-public-library-vBejyCBXZBY-unsplash", "flowers"],
+  [
+    "flower-letter",
+    "收到的信",
+    "the-new-york-public-library-vBejyCBXZBY-unsplash",
+    "flowers",
+  ],
   ["dried-petals", "乾燥的花瓣", "art30", "flowers"],
   ["broken-pineapple-bread", "破碎的菠蘿麵包", "art14", "flowers"],
   ["garden-bedroom", "髒兮兮的家", "artist03", "walk"],
@@ -203,14 +269,14 @@ const artworkSeeds: ArtworkSeed[] = [
 ];
 
 export const artworks: Artwork[] = artworkSeeds.map(
-  ([id, title, image, collectionId, description], index) => {
+  ([id, title, image, collectionId, description, creator], index) => {
     const collection = collections.find((item) => item.id === collectionId)!;
     return {
       id,
       title,
       image,
-      collection: collectionId,
-      artist: collection.artist,
+      collection: creator ? null : collectionId,
+      artist: creator ?? collection.artist,
       description: description ?? collection.description,
       price:
         index < 15 ? 300 : Number((0.044 + (index - 15) * 0.01).toFixed(3)),
@@ -265,7 +331,6 @@ export const exploreIds = [
 export const ranking = [
   {
     id: "woman-on-a-walk",
-    artist: "Zoe Jiang",
     price: 1774.19,
     day: 220.49,
     week: -2.43,
@@ -275,7 +340,6 @@ export const ranking = [
   },
   {
     id: "sculpted-mother",
-    artist: "Yui",
     price: 1698.42,
     day: -4.11,
     week: 14.2,
@@ -285,7 +349,6 @@ export const ranking = [
   },
   {
     id: "summer-days",
-    artist: "Bug Lin",
     price: 1524.89,
     day: 80.49,
     week: 90.23,
@@ -295,7 +358,6 @@ export const ranking = [
   },
   {
     id: "flowers-from-a-suitor",
-    artist: "Michael",
     price: 1418.4,
     day: 6.29,
     week: -4.2,
@@ -305,7 +367,6 @@ export const ranking = [
   },
   {
     id: "fish-today",
-    artist: "Wei JJ",
     price: 1395.55,
     day: 8.01,
     week: 18.58,
@@ -315,7 +376,6 @@ export const ranking = [
   },
   {
     id: "cats-in-life",
-    artist: "Even Lai",
     price: 1328.7,
     day: -2.84,
     week: 12.21,
@@ -325,7 +385,6 @@ export const ranking = [
   },
   {
     id: "ocean-wave",
-    artist: "Joanne",
     price: 1400.59,
     day: -3.92,
     week: -13.43,
@@ -335,7 +394,6 @@ export const ranking = [
   },
   {
     id: "sleeping-in",
-    artist: "Zoe Jiang",
     price: 1224.88,
     day: -9.23,
     week: -20.43,
@@ -345,7 +403,6 @@ export const ranking = [
   },
   {
     id: "flowing-gaze",
-    artist: "Kemus Wu",
     price: 1155,
     day: 0.43,
     week: 20.02,
@@ -355,7 +412,6 @@ export const ranking = [
   },
   {
     id: "two-birds",
-    artist: "Michael",
     price: 1005.32,
     day: 16.3,
     week: 9.18,
@@ -379,7 +435,12 @@ export const marketRanking = [
 ];
 
 export const walletProviders = [
-  "MetaMask", "Coinbase Wallet", "WalletConnect", "Phantom", "Glow", "Fortmatic",
+  "MetaMask",
+  "Coinbase Wallet",
+  "WalletConnect",
+  "Phantom",
+  "Glow",
+  "Fortmatic",
 ];
 
 export function queryText(value: unknown) {

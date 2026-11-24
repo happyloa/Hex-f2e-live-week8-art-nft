@@ -12,9 +12,10 @@ import {
 
 useHead({ title: "首頁" });
 const { openWallet } = useWallet();
-const hero = ["flowing-gaze", "ocean-wave", "window-birds"].map((id) =>
-  getArtwork(id)!,
-);
+const hero = ["flowing-gaze", "ocean-wave", "window-birds"].map((id) => {
+  const artwork = getArtwork(id)!;
+  return { ...artwork, collectionHref: collectionPath(artwork.collection!) };
+});
 const latest = latestIds.map((id) => getArtwork(id)!);
 const leaders = ranking
   .slice(0, 6)
@@ -51,7 +52,7 @@ const guide = [
           <span>Recommend</span><span>推薦系列</span>
         </div>
         <NuxtLink
-          :to="collectionPath(hero[0]!.collection)"
+          :to="hero[0]!.collectionHref"
           class="hero-media block"
           aria-label="探索瞳孔:流動的脈絡"
         >
@@ -73,7 +74,7 @@ const guide = [
           </h1>
           <p class="my-5">{{ hero[0]!.description }}</p>
           <NuxtLink
-            :to="collectionPath(hero[0]!.collection)"
+            :to="hero[0]!.collectionHref"
             class="more mt-auto self-end"
             :aria-label="`查看系列 ${hero[0]!.title}`"
             >MORE</NuxtLink
@@ -87,7 +88,7 @@ const guide = [
           class="hero-small"
         >
           <NuxtLink
-            :to="collectionPath(item.collection)"
+            :to="item.collectionHref"
             class="hero-media block"
             :aria-label="`探索${item.title}`"
           >
@@ -108,7 +109,7 @@ const guide = [
             </h2>
             <p class="my-4">{{ item.description }}</p>
             <NuxtLink
-              :to="collectionPath(item.collection)"
+              :to="item.collectionHref"
               class="more mt-auto self-end"
               :aria-label="`查看系列 ${item.title}`"
               >MORE</NuxtLink
@@ -118,7 +119,7 @@ const guide = [
       </div>
     </section>
 
-    <section class="site-shell site-section">
+    <section v-reveal class="site-shell site-section">
       <SectionRail english="Ranking" label="市價排行榜" href="/ranking" quiet />
       <ol class="rank-leaders">
         <li
@@ -151,7 +152,7 @@ const guide = [
               <p
                 class="flex items-center justify-between gap-2 border-t border-ink px-3 py-1.5 font-display lg:px-4"
               >
-                {{ entry.artist }}
+                {{ getArtist(entry.artwork.artist)?.name }}
                 <span class="flex items-center gap-1"
                   ><Diamond :size="13" aria-hidden="true" />300</span
                 >
@@ -162,17 +163,21 @@ const guide = [
       </ol>
     </section>
 
-    <section class="site-shell site-section">
+    <section v-reveal class="site-shell site-section">
       <SectionRail english="Artist" label="熱門藝術家" href="/artist" quiet />
       <ArtistCarousel />
     </section>
 
-    <section class="site-shell site-section">
+    <section v-reveal class="site-shell site-section">
       <SectionRail english="Artwork" label="最新藝術品" href="/explore" />
       <ArtGallery :items="latest" />
     </section>
 
-    <section class="site-section text-center" aria-labelledby="join-title">
+    <section
+      v-reveal
+      class="site-section text-center"
+      aria-labelledby="join-title"
+    >
       <div class="pb-7 md:pb-10">
         <h2 id="join-title" class="font-display text-4xl md:text-5xl">
           Join Us

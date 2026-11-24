@@ -13,12 +13,10 @@ npm ci
 npm run dev
 ```
 
-- `npm run verify` 執行型別檢查與靜態建置。
-- `npm run preview` 使用 Wrangler 預覽建置結果。
-- `npm run deploy` 建置並部署至 Cloudflare。
+`npm run verify` 執行型別檢查與靜態建置，完成後可用 `npm run preview` 預覽。登入 Wrangler 後，可用 `npm run deploy` 建置並部署。
 
 ## 頁面與互動
 
-首頁、藝術家作品與收藏、系列篩選與排序、作品詳情、市值排行和探索搜尋。版面以 XD 的 1440px 桌機與 360px 手機為基準，也支援平板。
+包含首頁、藝術家列表與作品／收藏、系列篩選與排序、作品詳情、市值排行、探索搜尋及 404。支援桌機、平板和手機，動效會配合系統的減少動態效果設定。
 
 市值、出價和錢包連結使用作業示範資料。

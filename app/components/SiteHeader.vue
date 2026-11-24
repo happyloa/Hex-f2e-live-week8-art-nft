@@ -59,7 +59,7 @@ function walletFromMenu() {
     >
       <form
         v-if="mobile === 'search'"
-        class="absolute inset-0 flex items-center gap-3 md:hidden"
+        class="interface-enter absolute inset-0 flex items-center gap-3 md:hidden"
         role="search"
         @submit.prevent="search"
       >
@@ -186,7 +186,7 @@ function walletFromMenu() {
     <nav
       id="mobile-menu"
       v-show="mobile === 'menu'"
-      class="absolute inset-x-0 top-full z-10 grid bg-white px-3 pb-5 text-center font-bold md:hidden!"
+      class="interface-enter absolute inset-x-0 top-full z-10 grid bg-white px-3 pb-5 text-center font-bold md:hidden!"
       aria-label="行動版主選單"
     >
       <NuxtLink

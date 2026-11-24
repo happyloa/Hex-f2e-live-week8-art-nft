@@ -28,8 +28,10 @@ const sorts = [
   { id: "name", text: "作品名稱" },
 ];
 
-const applied = computed(() => readFilters(route.query));
-const draft = ref(readFilters(route.query));
+const showBirdTraits = collection.id === "birds";
+const filtersFromUrl = () => readFilters(route.query, showBirdTraits);
+const applied = computed(filtersFromUrl);
+const draft = ref(filtersFromUrl());
 const filterOpen = ref(false);
 const filterError = ref("");
 const activeCount = computed(
@@ -58,6 +60,7 @@ const results = computed(() => {
       "window-birds",
       "little-birds",
       "hurt-bird",
+      "branches",
     ];
     return items.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
   }
@@ -65,12 +68,12 @@ const results = computed(() => {
 });
 
 watch(applied, () => {
-  draft.value = readFilters(route.query);
+  draft.value = filtersFromUrl();
   filterError.value = "";
 });
 
 function openFilters() {
-  draft.value = readFilters(route.query);
+  draft.value = filtersFromUrl();
   filterError.value = "";
   filterOpen.value = true;
 }
@@ -103,7 +106,7 @@ function changeSort(event: Event) {
   <div class="site-shell page-space collection-layout">
     <aside class="hidden self-start lg:block" aria-label="系列作品篩選">
       <form class="panel" @submit.prevent="applyFilters">
-        <CollectionFilters v-model="draft" />
+        <CollectionFilters v-model="draft" :show-bird-traits="showBirdTraits" />
         <p v-if="filterError" class="px-4 pt-3 text-sm text-down" role="alert">
           {{ filterError }}
         </p>
@@ -195,7 +198,7 @@ function changeSort(event: Event) {
             <X :size="23" aria-hidden="true" />
           </button>
         </header>
-        <CollectionFilters v-model="draft" />
+        <CollectionFilters v-model="draft" :show-bird-traits="showBirdTraits" />
         <p v-if="filterError" class="px-4 pt-3 text-sm text-down" role="alert">
           {{ filterError }}
         </p>
