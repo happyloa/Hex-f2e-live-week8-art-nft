@@ -5,15 +5,19 @@ import { walletProviders } from "~/data/catalog";
 const { wallet, isWalletOpen, closeWallet, connectWallet, restoreWallet } =
   useWallet();
 const selected = ref("");
-const providers = [0, 1, 2, 3, 4, 5].map((i) => ({
-  name: walletProviders[i]!,
-  src: `/images/connect0${i + 1}.png`,
+const providers = walletProviders.map((name, index) => ({
+  name,
+  src: `/images/connect0${index + 1}.png`,
 }));
 
 onMounted(restoreWallet);
-watch(isWalletOpen, (open) => {
-  if (open) selected.value = wallet.value ?? "";
-});
+watch(
+  [isWalletOpen, wallet],
+  ([open, currentWallet]) => {
+    if (open) selected.value = currentWallet ?? "";
+  },
+  { immediate: true },
+);
 
 function submit() {
   if (!selected.value) return;
@@ -25,25 +29,23 @@ function submit() {
 <template>
   <AppDialog :open="isWalletOpen" label="連結你的錢包" @close="closeWallet">
     <form class="flex min-h-dvh flex-col md:min-h-0" @submit.prevent="submit">
-      <header
-        class="flex items-center justify-between gap-3 border-b border-ink px-3 py-4 md:px-6"
-      >
-        <h2 class="text-xl font-bold">連結你的錢包</h2>
+      <header class="relative border-b border-ink px-12 py-4 text-center">
+        <h2 class="text-xl">連結你的錢包</h2>
         <button
           type="button"
           aria-label="關閉錢包視窗"
-          class="grid size-8 place-items-center"
+          class="absolute top-1/2 right-2 grid size-9 -translate-y-1/2 place-items-center"
           @click="closeWallet"
         >
           <X :size="25" aria-hidden="true" />
         </button>
       </header>
-      <fieldset class="grid gap-3 p-3 md:grid-cols-2 md:p-6">
+      <fieldset class="grid gap-2 px-3 py-6 md:grid-cols-2 md:px-4">
         <legend class="sr-only">選擇錢包</legend>
         <label
           v-for="provider in providers"
           :key="provider.name"
-          class="flex min-h-[58px] cursor-pointer items-center gap-3 border border-ink px-4 py-3 text-sm font-bold hover:bg-paper has-checked:border-accent-dark has-checked:bg-[#fdf0ed] has-focus-visible:outline-2 has-focus-visible:outline-accent-dark"
+          class="flex min-h-12 cursor-pointer items-center gap-3 border border-ink px-3 py-2 font-display text-base hover:bg-paper has-checked:border-accent-dark has-focus-visible:outline-2 has-focus-visible:outline-accent-dark"
         >
           <input
             v-model="selected"
@@ -54,10 +56,10 @@ function submit() {
           />
           <img
             :src="provider.src"
-            width="24"
-            height="24"
+            width="20"
+            height="20"
             alt=""
-            class="size-6 object-contain"
+            class="size-5 object-contain"
           />
           <span>{{ provider.name }}</span>
           <Check
@@ -68,23 +70,27 @@ function submit() {
           />
         </label>
       </fieldset>
-      <div class="mt-auto px-3 pb-6 md:px-6">
-        <p class="mb-3 text-center text-sm text-neutral-650">
+      <div class="mt-auto grid justify-items-center md:px-4 md:pb-6">
+        <p class="mb-3 px-3 text-center text-sm text-neutral-700">
           錢包連結為作業示範。
         </p>
-        <button class="action w-full" type="submit" :disabled="!selected">
-          連結錢包
-        </button>
         <button
           v-if="wallet"
           type="button"
-          class="mt-3 w-full py-2 text-sm underline"
+          class="mb-2 px-4 py-2 text-sm underline"
           @click="
             connectWallet(null);
             closeWallet();
           "
         >
           中斷示範連結
+        </button>
+        <button
+          class="action w-full md:w-42"
+          type="submit"
+          :disabled="!selected"
+        >
+          連結錢包
         </button>
       </div>
     </form>

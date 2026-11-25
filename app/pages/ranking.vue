@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Diamond, Triangle } from "@lucide/vue";
+import { Diamond, Minus, Plus } from "@lucide/vue";
 import {
   artPath,
   formatNumber,
@@ -110,50 +110,59 @@ function metricText(
         </tr>
       </tbody>
     </table>
-    <ol class="grid gap-2 lg:hidden">
-      <li v-for="(entry, index) in entries" :key="entry.id" class="panel">
+    <ol class="divide-y divide-ink border border-ink bg-white lg:hidden">
+      <li v-for="(entry, index) in entries" :key="entry.id">
         <div
-          class="grid min-h-16 grid-cols-[29px_minmax(0,1fr)_auto_31px] items-center text-sm"
+          class="relative grid min-h-19 grid-cols-[36px_minmax(0,1fr)_auto] items-center gap-2 pr-2 text-sm"
         >
-          <span class="text-center font-display text-xl">{{ index + 1 }}</span>
+          <span
+            class="grid h-full place-items-center border-r border-ink font-display text-2xl"
+          >
+            {{ index + 1 }}
+          </span>
           <NuxtLink
             :to="artPath(entry.id)"
             class="flex min-w-0 items-center gap-2 font-bold hover:underline"
           >
             <ArtPicture
               :name="entry.artwork.image"
-              class="size-11 shrink-0 border border-ink object-cover"
+              class="size-11 shrink-0 rounded-full object-cover"
               sizes="44px"
             />
             <span>{{ entry.artwork.title }}</span>
           </NuxtLink>
-          <span class="flex items-center gap-0.5 pl-1 font-display text-base"
+          <span class="flex items-center gap-0.5 font-display text-base"
             ><Diamond :size="12" aria-hidden="true" />{{
               formatNumber(entry.price)
             }}</span
           >
           <button
             type="button"
-            class="grid min-h-11 place-items-center"
+            class="rank-toggle absolute right-0 bottom-0 grid size-11 items-end justify-items-end p-1 text-white"
             :aria-label="`${expanded.includes(entry.id) ? '收合' : '展開'}${entry.artwork.title}市值資訊`"
             :aria-expanded="expanded.includes(entry.id)"
             :aria-controls="`rank-${entry.id}`"
             @click="toggle(entry.id)"
           >
-            <Triangle
-              :size="12"
-              fill="currentColor"
+            <Minus
+              v-if="expanded.includes(entry.id)"
+              :size="14"
               aria-hidden="true"
-              :class="{ 'rotate-180': !expanded.includes(entry.id) }"
             />
+            <Plus v-else :size="14" aria-hidden="true" />
           </button>
         </div>
         <dl
           v-show="expanded.includes(entry.id)"
           :id="`rank-${entry.id}`"
-          class="grid grid-cols-3 gap-3 border-t border-ink p-3 text-center text-sm"
+          class="grid grid-cols-6 gap-y-3 border-t border-ink px-2 py-4 text-center text-sm"
         >
-          <div v-for="item in metrics" :key="item.key">
+          <div
+            v-for="item in metrics"
+            :key="item.key"
+            class="col-span-2"
+            :class="{ 'col-start-2': item.key === 'owners' }"
+          >
             <dt class="font-bold">{{ item.name }}</dt>
             <dd
               class="mt-1 font-display text-lg"
@@ -180,5 +189,24 @@ function metricText(
   border-top: 1px solid;
   border-bottom: 1px solid;
   border-color: var(--color-ink);
+}
+.rank-toggle::before {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 34px;
+  height: 34px;
+  background: var(--color-ink);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  content: "";
+}
+.rank-toggle[aria-expanded="true"]::before {
+  background: var(--color-accent-dark);
+}
+.rank-toggle > svg {
+  position: relative;
+}
+.rank-toggle:focus-visible {
+  outline-offset: -2px;
 }
 </style>
