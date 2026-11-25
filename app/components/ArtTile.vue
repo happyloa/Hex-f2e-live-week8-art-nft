@@ -2,8 +2,9 @@
 import { Diamond } from "@lucide/vue";
 import { artPath, formatNumber } from "~/data/catalog";
 import type { Artwork } from "~/data/catalog";
+import { priceInCurrency, type PriceCurrency } from "~/data/filters";
 
-defineProps<{ artwork: Artwork }>();
+defineProps<{ artwork: Artwork; priceCurrency?: PriceCurrency }>();
 
 const coverRatios: Record<string, string> = {
   "private-life": "258 / 254",
@@ -36,7 +37,10 @@ const coverRatios: Record<string, string> = {
             class="pointer-events-none absolute inset-0 hidden flex-col gap-3 bg-black/70 p-3 text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 sm:flex lg:p-4"
           >
             <p class="line-clamp-3 font-bold">{{ artwork.description }}</p>
-            <p class="flex items-center gap-1 font-display text-xl">
+            <p
+              v-if="!priceCurrency"
+              class="flex items-center gap-1 font-display text-xl"
+            >
               <Diamond :size="14" aria-hidden="true" />{{
                 formatNumber(artwork.price)
               }}
@@ -48,9 +52,13 @@ const coverRatios: Record<string, string> = {
           </div>
         </div>
       </div>
-      <h3 class="py-3 text-sm font-bold md:py-4 md:text-base">
-        {{ artwork.title }}
-      </h3>
+      <div class="py-3 md:py-4">
+        <h3 class="text-sm font-bold md:text-base">{{ artwork.title }}</h3>
+        <p v-if="priceCurrency" class="mt-1 font-display">
+          {{ formatNumber(priceInCurrency(artwork.price, priceCurrency)) }}
+          {{ priceCurrency }}
+        </p>
+      </div>
     </NuxtLink>
   </article>
 </template>

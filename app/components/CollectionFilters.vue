@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { ChevronDown } from "@lucide/vue";
 import { birdColors, birdTypes, networks, statuses } from "~/data/catalog";
+import { demoBnbPerEth, priceCurrencies } from "~/data/filters";
 import type { Filters } from "~/data/filters";
 
 const filters = defineModel<Filters>({ required: true });
@@ -9,24 +11,32 @@ defineProps<{ showBirdTraits: boolean }>();
 <template>
   <div class="filter-list">
     <details open>
-      <summary>網路</summary>
+      <summary>網路<ChevronDown :size="16" aria-hidden="true" /></summary>
       <label v-for="network in networks" :key="network" class="check-option">
-        <input v-model="filters.network" type="checkbox" :value="network" />
         {{ network }}
+        <input v-model="filters.network" type="checkbox" :value="network" />
       </label>
     </details>
     <details open>
-      <summary>狀態</summary>
+      <summary>狀態<ChevronDown :size="16" aria-hidden="true" /></summary>
       <label v-for="status in statuses" :key="status" class="check-option">
-        <input v-model="filters.status" type="checkbox" :value="status" />
         {{ status }}
+        <input v-model="filters.status" type="checkbox" :value="status" />
       </label>
     </details>
     <details open>
-      <summary>價格</summary>
+      <summary>價格<ChevronDown :size="16" aria-hidden="true" /></summary>
       <div
-        class="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto] items-center gap-2 py-1"
+        class="grid grid-cols-[auto_minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 py-1"
       >
+        <label>
+          <span class="sr-only">價格幣別</span>
+          <select v-model="filters.currency" class="choice currency-choice">
+            <option v-for="currency in priceCurrencies" :key="currency">
+              {{ currency }}
+            </option>
+          </select>
+        </label>
         <label>
           <span class="sr-only">最低價格</span>
           <input
@@ -50,15 +60,20 @@ defineProps<{ showBirdTraits: boolean }>();
             placeholder="最高"
           />
         </label>
-        <span class="font-display">ETH</span>
       </div>
+      <p
+        v-if="filters.currency === 'BNB'"
+        class="mt-2 text-xs text-neutral-700"
+      >
+        示範換算 1 ETH = {{ demoBnbPerEth }} BNB
+      </p>
     </details>
     <details v-if="showBirdTraits" open>
-      <summary>屬性</summary>
+      <summary>屬性<ChevronDown :size="16" aria-hidden="true" /></summary>
       <p class="my-2 font-bold">品種</p>
       <label v-for="species in birdTypes" :key="species" class="check-option">
-        <input v-model="filters.species" type="checkbox" :value="species" />
         {{ species }}
+        <input v-model="filters.species" type="checkbox" :value="species" />
       </label>
       <label class="select-option">
         <span>鳥的數量</span>
@@ -94,21 +109,40 @@ defineProps<{ showBirdTraits: boolean }>();
   padding: 12px 16px;
 }
 .filter-list > details > summary {
+  display: flex;
   cursor: pointer;
-  font-size: 1.125rem;
+  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   font-weight: 700;
+}
+.filter-list > details[open] > summary {
+  margin-bottom: 8px;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+details[open] > summary > svg {
+  rotate: 180deg;
+}
+.currency-choice.choice {
+  padding-right: 27px;
+  background-position: right 7px center;
 }
 .check-option {
   display: flex;
   min-height: 34px;
   cursor: pointer;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
 }
 .check-option input {
   width: 16px;
   height: 16px;
-  accent-color: var(--color-accent-dark);
+  flex-shrink: 0;
+  accent-color: var(--color-ink);
 }
 .select-option {
   display: grid;

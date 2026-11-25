@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import type Masonry from "masonry-layout";
 import type { Artwork } from "~/data/catalog";
+import type { PriceCurrency } from "~/data/filters";
 
 const props = withDefaults(
-  defineProps<{ items: Artwork[]; columns?: 3 | 4 }>(),
+  defineProps<{
+    items: Artwork[];
+    columns?: 3 | 4;
+    priceCurrency?: PriceCurrency;
+  }>(),
   { columns: 4 },
 );
 const grid = ref<HTMLElement>();
@@ -58,7 +63,7 @@ onBeforeUnmount(() => {
       class="gallery-item"
       @load.capture="relayout"
     >
-      <ArtTile :artwork="artwork" />
+      <ArtTile :artwork="artwork" :price-currency="priceCurrency" />
     </div>
   </div>
 </template>

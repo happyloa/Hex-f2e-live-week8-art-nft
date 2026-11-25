@@ -162,7 +162,14 @@ function changeSort(event: Event) {
           </select>
         </label>
       </div>
-      <ArtGallery v-if="results.length" :items="results" :columns="3" />
+      <ArtGallery
+        v-if="results.length"
+        :items="results"
+        :columns="3"
+        :price-currency="
+          applied.currency === 'BNB' ? applied.currency : undefined
+        "
+      />
       <div v-else class="panel p-8 text-center">
         <p class="mb-4">沒有符合篩選條件的作品。</p>
         <button type="button" class="more" @click="resetFilters">
@@ -185,14 +192,12 @@ function changeSort(event: Event) {
         class="flex min-h-dvh flex-col md:min-h-0"
         @submit.prevent="applyFilters"
       >
-        <header
-          class="flex items-center justify-between border-b border-ink p-4"
-        >
-          <h2 class="text-xl font-bold">篩選條件</h2>
+        <header class="relative border-b border-ink px-12 py-4 text-center">
+          <h2 class="text-xl">篩選條件</h2>
           <button
             type="button"
             aria-label="關閉篩選"
-            class="grid size-9 place-items-center"
+            class="absolute top-1/2 right-2 grid size-9 -translate-y-1/2 place-items-center"
             @click="filterOpen = false"
           >
             <X :size="23" aria-hidden="true" />
@@ -202,17 +207,15 @@ function changeSort(event: Event) {
         <p v-if="filterError" class="px-4 pt-3 text-sm text-down" role="alert">
           {{ filterError }}
         </p>
-        <div
-          class="sticky bottom-0 mt-auto flex gap-3 border-t border-ink bg-white p-3"
-        >
+        <div class="sticky bottom-0 mt-auto grid border-t border-ink bg-white">
           <button
             type="button"
-            class="choice flex-1 hover:bg-paper"
+            class="justify-self-center px-4 py-2 text-sm underline"
             @click="resetFilters"
           >
             清除
           </button>
-          <button type="submit" class="action flex-1">確認</button>
+          <button type="submit" class="action w-full">確認</button>
         </div>
       </form>
     </AppDialog>

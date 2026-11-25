@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronDown, Diamond, X } from "@lucide/vue";
+import { ArrowRight, ChevronDown, Diamond, X } from "@lucide/vue";
 import {
   artistPath,
   artworks,
@@ -25,22 +25,35 @@ useHead({
   meta: [{ name: "description", content: artwork.description }],
 });
 
-interface Bid {
-  price: number;
-  term: string;
-  avatar: string;
-}
 const { wallet, openWallet } = useWallet();
+const { bids, addBid } = useDemoBids(artwork.id);
 const bidOpen = ref(false);
 const amount = ref<number | "">("");
 const notice = ref("");
-const bids = useState<Bid[]>(`bids-${artwork.id}`, () => []);
+const dateTime = new Intl.DateTimeFormat("zh-TW", {
+  dateStyle: "short",
+  timeStyle: "short",
+});
 const offers = [
-  { price: 0.044, term: "3 個月後", avatar: "user01" },
-  { price: 0.054, term: "1 個月後", avatar: "user02" },
-  { price: 0.056, term: "2 週後", avatar: "artist03" },
-  { price: 0.044, term: "2 週後", avatar: "user03" },
+  { id: "offer-1", price: 0.044, term: "3 個月後", avatar: "user01" },
+  { id: "offer-2", price: 0.054, term: "1 個月後", avatar: "user02" },
+  { id: "offer-3", price: 0.056, term: "2 週後", avatar: "artist03" },
+  { id: "offer-4", price: 0.044, term: "2 週後", avatar: "user03" },
 ];
+const allOffers = computed(() => [
+  ...bids.value.map((bid) => ({
+    id: bid.id,
+    price: bid.price,
+    term: dateTime.format(bid.placedAt),
+    avatar: "user01",
+  })),
+  ...offers,
+]);
+const highestBid = computed(() =>
+  allOffers.value.reduce((highest, bid) =>
+    bid.price > highest.price ? bid : highest,
+  ),
+);
 const attributes =
   collection?.id === "birds"
     ? [
@@ -93,11 +106,9 @@ function submitBid() {
     amount.value <= 0
   )
     return;
-  bids.value = [
-    { price: amount.value, term: "剛剛", avatar: "user01" },
-    ...bids.value,
-  ];
-  notice.value = "已新增示範出價。";
+  notice.value = addBid(amount.value)
+    ? "已新增示範出價。"
+    : "已新增暫時出價，瀏覽器無法儲存。";
   bidOpen.value = false;
 }
 </script>
@@ -116,28 +127,43 @@ function submitBid() {
       </div>
       <div class="panel border-t-0 lg:border-t">
         <div class="p-5 md:p-8">
-          <NuxtLink
-            :to="artistPath(artist.id)"
-            class="inline-flex items-center gap-2 font-display text-lg hover:underline"
-          >
-            <ArtPicture
-              :name="artist.image"
-              class="size-9 rounded-full border object-cover"
-              sizes="36px"
-            />{{ artist.name }}
-          </NuxtLink>
-          <h1
-            id="work-title"
-            class="mt-3 text-3xl leading-tight font-bold xl:text-5xl"
-          >
-            {{ artwork.title }}
-          </h1>
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <h1
+              id="work-title"
+              class="text-3xl leading-tight font-bold xl:text-5xl"
+            >
+              {{ artwork.title }}
+            </h1>
+            <NuxtLink
+              :to="artistPath(artist.id)"
+              class="inline-flex items-center gap-2 font-display text-lg hover:underline"
+            >
+              <ArtPicture
+                :name="artist.image"
+                class="size-8 rounded-full border object-cover"
+                sizes="32px"
+              />{{ artist.name }}
+            </NuxtLink>
+          </div>
           <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
-            <p class="flex items-center gap-2 font-display text-3xl">
-              <Diamond :size="23" aria-hidden="true" />{{
-                formatNumber(artwork.price)
-              }}
-              ETH
+            <div v-if="artwork.status === '拍賣中'">
+              <p class="text-sm text-neutral-700">最高出價</p>
+              <p
+                class="mt-1 flex items-center gap-2 font-display text-xl"
+                aria-live="polite"
+              >
+                <ArtPicture
+                  :name="highestBid.avatar"
+                  class="size-8 rounded-full object-cover"
+                  sizes="32px"
+                />
+                <ArrowRight :size="15" aria-hidden="true" />
+                <span>{{ formatNumber(highestBid.price) }} ETH</span>
+              </p>
+            </div>
+            <p v-else class="flex items-center gap-2 font-display text-xl">
+              <Diamond :size="16" aria-hidden="true" />
+              {{ formatNumber(artwork.price) }} ETH
             </p>
             <button
               v-if="artwork.status === '拍賣中'"
@@ -203,13 +229,13 @@ function submitBid() {
           <thead class="border-b border-ink">
             <tr>
               <th scope="col" class="px-4 py-3">價格</th>
-              <th scope="col" class="px-4 py-3">期限</th>
+              <th scope="col" class="px-4 py-3">期限／出價時間</th>
             </tr>
           </thead>
           <tbody>
             <tr
-              v-for="(offer, index) in [...bids, ...offers]"
-              :key="index"
+              v-for="offer in allOffers"
+              :key="offer.id"
               class="border-b border-ink/20 last:border-b-0"
             >
               <td class="px-4 py-3 font-display text-lg">

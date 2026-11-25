@@ -22,13 +22,21 @@ export function useWallet() {
 
   function connectWallet(provider: string | null) {
     wallet.value = provider;
-    if (provider) sessionStorage.setItem("art-nft-demo-wallet", provider);
-    else sessionStorage.removeItem("art-nft-demo-wallet");
+    try {
+      if (provider) sessionStorage.setItem("art-nft-demo-wallet", provider);
+      else sessionStorage.removeItem("art-nft-demo-wallet");
+    } catch {
+      // The demo wallet can still be used until the page is reloaded.
+    }
   }
 
   function restoreWallet() {
-    const saved = sessionStorage.getItem("art-nft-demo-wallet");
-    if (saved && walletProviders.includes(saved)) wallet.value = saved;
+    try {
+      const saved = sessionStorage.getItem("art-nft-demo-wallet");
+      if (saved && walletProviders.includes(saved)) wallet.value = saved;
+    } catch {
+      // Keep the in-memory wallet when the browser blocks storage.
+    }
   }
 
   return {
