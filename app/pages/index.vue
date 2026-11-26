@@ -17,6 +17,14 @@ const hero = ["flowing-gaze", "ocean-wave", "window-birds"].map((id) => {
   return { ...artwork, collectionHref: collectionPath(artwork.collection!) };
 });
 const latest = latestIds.map((id) => getArtwork(id)!);
+const latestMobileCovers = [
+  "140 / 139",
+  "140 / 151",
+  "140 / 93",
+  "140 / 173",
+  "140 / 192",
+  "140 / 99",
+];
 const leaders = ranking
   .slice(0, 6)
   .map((entry) => ({ ...entry, artwork: getArtwork(entry.id)! }));
@@ -170,12 +178,12 @@ const guide = [
 
     <section v-reveal class="site-shell site-section">
       <SectionRail english="Artwork" label="最新藝術品" href="/explore" />
-      <ArtGallery :items="latest" />
+      <ArtGallery :items="latest" :mobile-covers="latestMobileCovers" />
     </section>
 
     <section
       v-reveal
-      class="site-section text-center"
+      class="join site-section text-center"
       aria-labelledby="join-title"
     >
       <div class="pb-7 md:pb-10">
@@ -186,7 +194,7 @@ const guide = [
       </div>
       <div class="border-t-[7px] border-double border-ink">
         <div
-          class="site-shell grid gap-10 py-10 md:grid-cols-2 lg:grid-cols-4 lg:py-20"
+          class="join-guide site-shell grid gap-10 py-10 md:grid-cols-2 lg:grid-cols-4 lg:py-20"
         >
           <div
             v-for="step in guide"
@@ -269,6 +277,52 @@ const guide = [
   .hero-main,
   .hero-pair {
     border-inline: 0;
+  }
+  .hero-main {
+    border-block-start: 0;
+  }
+  .hero-small .hero-media {
+    aspect-ratio: 360 / 372;
+  }
+  .hero-copy {
+    min-height: 272px;
+    padding-block: 28px 24px;
+  }
+  .hero-main .hero-copy {
+    min-height: 256px;
+    padding-bottom: 32px;
+  }
+  .hero-copy :is(h1, h2) {
+    margin-block: 4px 0;
+    font-size: 24px;
+    line-height: 36px;
+  }
+  .hero-copy > p {
+    margin-block: 16px 12px;
+  }
+  .home-page :deep(.more) {
+    min-width: 132px;
+  }
+  .home-page :deep(.section-rail) {
+    min-height: 42px;
+    padding-bottom: 0;
+  }
+  .join-guide {
+    padding-block: 24px 72px;
+  }
+  .join-guide > div {
+    min-height: 162px;
+    max-width: 336px;
+  }
+  .rank-link {
+    grid-template-columns: 37px 87px minmax(0, 1fr);
+    min-height: 89px;
+  }
+  .rank-link > .relative {
+    height: 89px;
+  }
+  .rank-link h3 {
+    font-size: 18px;
   }
 }
 @media (min-width: 768px) {

@@ -94,6 +94,34 @@ const pagination = {
   width: 16px;
   background: var(--color-accent);
 }
+@media (max-width: 767px) {
+  .artist-carousel {
+    padding-bottom: 32px;
+  }
+  .artist-title {
+    top: 24px;
+    left: 24px;
+    font-size: 32px;
+  }
+  .artist-caption {
+    margin-top: 16px;
+    min-height: 96px;
+    padding: 24px;
+  }
+  .artist-caption > p {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    padding: 0;
+    font-size: 16px;
+  }
+  .artist-caption .more {
+    position: absolute;
+    top: 189px;
+    right: 8px;
+  }
+}
 @media (min-width: 768px) {
   .artist-slide {
     width: min(636px, 58%);

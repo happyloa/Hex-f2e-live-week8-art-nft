@@ -4,7 +4,11 @@ import { artPath, formatNumber } from "~/data/catalog";
 import type { Artwork } from "~/data/catalog";
 import { priceInCurrency, type PriceCurrency } from "~/data/filters";
 
-defineProps<{ artwork: Artwork; priceCurrency?: PriceCurrency }>();
+defineProps<{
+  artwork: Artwork;
+  priceCurrency?: PriceCurrency;
+  mobileCover?: string;
+}>();
 
 const coverRatios: Record<string, string> = {
   "private-life": "258 / 254",
@@ -19,7 +23,10 @@ const coverRatios: Record<string, string> = {
 </script>
 
 <template>
-  <article class="group border-b border-ink/65">
+  <article
+    class="group border-b border-ink/65"
+    :class="{ 'mobile-cover': mobileCover }"
+  >
     <NuxtLink
       :to="artPath(artwork.id)"
       class="block"
@@ -29,8 +36,11 @@ const coverRatios: Record<string, string> = {
         <div class="relative">
           <ArtPicture
             :name="artwork.image"
-            class="h-auto w-full object-cover"
-            :style="{ aspectRatio: coverRatios[artwork.id] }"
+            class="art-cover h-auto w-full object-cover"
+            :style="{
+              '--cover-ratio': coverRatios[artwork.id],
+              '--mobile-cover-ratio': mobileCover,
+            }"
             sizes="(min-width: 1280px) 280px, (min-width: 768px) 29vw, 42vw"
           />
           <div
@@ -52,7 +62,7 @@ const coverRatios: Record<string, string> = {
           </div>
         </div>
       </div>
-      <div class="py-3 md:py-4">
+      <div class="art-label py-3 md:py-4">
         <h3 class="text-sm font-bold md:text-base">{{ artwork.title }}</h3>
         <p v-if="priceCurrency" class="mt-1 font-display">
           {{ formatNumber(priceInCurrency(artwork.price, priceCurrency)) }}
@@ -62,3 +72,20 @@ const coverRatios: Record<string, string> = {
     </NuxtLink>
   </article>
 </template>
+
+<style scoped>
+.art-cover {
+  aspect-ratio: var(--cover-ratio, auto);
+}
+@media (max-width: 767px) {
+  .mobile-cover .art-cover {
+    aspect-ratio: var(--mobile-cover-ratio);
+  }
+  .mobile-cover .art-label {
+    padding: 4px 8px 11px;
+  }
+  .mobile-cover h3 {
+    font-weight: 400;
+  }
+}
+</style>

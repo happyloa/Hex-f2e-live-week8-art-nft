@@ -8,6 +8,7 @@ const props = withDefaults(
     items: Artwork[];
     columns?: 3 | 4;
     priceCurrency?: PriceCurrency;
+    mobileCovers?: readonly string[];
   }>(),
   { columns: 4 },
 );
@@ -54,16 +55,27 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="grid" class="art-gallery" :class="{ 'three-cols': columns === 3 }">
+  <div
+    ref="grid"
+    class="art-gallery"
+    :class="{ 'three-cols': columns === 3, 'mobile-covers': mobileCovers }"
+  >
     <div class="gallery-size" aria-hidden="true" />
     <div class="gallery-gutter" aria-hidden="true" />
     <div
-      v-for="artwork in items"
+      v-for="(artwork, index) in items"
       :key="artwork.id"
       class="gallery-item"
+      :class="{
+        'hidden md:block': mobileCovers && index >= mobileCovers.length,
+      }"
       @load.capture="relayout"
     >
-      <ArtTile :artwork="artwork" :price-currency="priceCurrency" />
+      <ArtTile
+        :artwork="artwork"
+        :price-currency="priceCurrency"
+        :mobile-cover="mobileCovers?.[index]"
+      />
     </div>
   </div>
 </template>
@@ -98,6 +110,23 @@ onBeforeUnmount(() => {
 }
 .is-masonry .gallery-item {
   margin-bottom: calc(var(--gap) * 2);
+}
+@media (max-width: 767px) {
+  .mobile-covers {
+    --gap: 24px;
+    row-gap: 16px;
+  }
+  .mobile-covers.is-masonry {
+    margin-bottom: -16px;
+  }
+  .mobile-covers.is-masonry .gallery-item {
+    margin-bottom: 0;
+  }
+  .mobile-covers.is-masonry .gallery-item:not(.hidden)::after {
+    content: "";
+    display: block;
+    height: 16px;
+  }
 }
 @media (min-width: 768px) {
   .art-gallery {
