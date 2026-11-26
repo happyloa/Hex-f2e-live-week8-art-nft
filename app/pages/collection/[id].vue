@@ -19,7 +19,12 @@ if (!collection)
 const artist = getArtist(collection.artist)!;
 useHead({ title: collection.name });
 const all = artworks.filter((item) => item.collection === collection.id);
-const labels = ["項目", "擁有者", "總額", "底價"];
+const labels = [
+  { label: "項目", index: 0 },
+  { label: "擁有者", index: 1 },
+  { label: "底價", index: 3 },
+  { label: "總額", index: 2 },
+];
 const availableSorts = ["latest", "price-asc", "price-desc", "name"];
 const sorts = [
   { id: "latest", text: "最新上架" },
@@ -52,11 +57,11 @@ const results = computed(() => {
   if (collection.id === "birds") {
     const order = [
       "penguin-like",
+      "two-birds",
+      "bird-gathering",
       "joy-of-sharing",
       "metal-bird",
       "big-and-small",
-      "bird-gathering",
-      "two-birds",
       "window-birds",
       "little-birds",
       "hurt-bird",
@@ -123,24 +128,30 @@ function changeSort(event: Event) {
       </form>
     </aside>
     <div class="min-w-0">
-      <header class="panel relative p-5 md:p-8">
-        <NuxtLink
-          :to="artistPath(artist.id)"
-          class="inline-flex items-center gap-2 font-display text-lg hover:underline"
+      <header class="panel collection-header p-5 md:p-8">
+        <div class="collection-intro">
+          <NuxtLink
+            :to="artistPath(artist.id)"
+            class="collection-artist inline-flex items-center gap-2 font-display text-lg hover:underline"
+          >
+            <ArtPicture
+              :name="artist.image"
+              class="size-8 rounded-full object-cover"
+              sizes="32px"
+            />{{ artist.name }}
+          </NuxtLink>
+          <h1 class="mt-3 text-3xl font-bold md:text-5xl">
+            {{ collection.name }}
+          </h1>
+          <p class="collection-description mt-4 max-w-165 leading-7">
+            {{ collection.description }}
+          </p>
+        </div>
+        <dl
+          class="collection-stats mt-5 grid grid-cols-4 border border-ink text-center"
         >
-          <ArtPicture
-            :name="artist.image"
-            class="size-8 rounded-full border object-cover"
-            sizes="32px"
-          />{{ artist.name }}
-        </NuxtLink>
-        <h1 class="mt-3 text-3xl font-bold md:text-5xl">
-          {{ collection.name }}
-        </h1>
-        <p class="mt-4 max-w-165 leading-7">{{ collection.description }}</p>
-        <dl class="mt-5 grid grid-cols-4 border border-ink text-center">
           <div
-            v-for="(label, index) in labels"
+            v-for="{ label, index } in labels"
             :key="label"
             class="grid gap-1 border-l border-ink px-1 py-3 first:border-l-0"
           >
@@ -151,8 +162,12 @@ function changeSort(event: Event) {
           </div>
         </dl>
       </header>
-      <div class="my-5 flex items-center justify-between gap-3">
-        <p role="status" class="text-sm">{{ results.length }} 件作品</p>
+      <div
+        class="collection-toolbar my-5 flex items-center justify-between gap-3"
+      >
+        <p role="status" class="text-sm lg:sr-only">
+          {{ results.length }} 件作品
+        </p>
         <label>
           <span class="sr-only">作品排序</span>
           <select :value="sort" class="choice" @change="changeSort">
@@ -166,6 +181,7 @@ function changeSort(event: Event) {
         v-if="results.length"
         :items="results"
         :columns="3"
+        class="collection-gallery"
         :price-currency="
           applied.currency === 'BNB' ? applied.currency : undefined
         "
@@ -228,6 +244,78 @@ function changeSort(event: Event) {
     display: grid;
     grid-template-columns: minmax(225px, 306fr) minmax(0, 966fr);
     gap: 24px;
+    padding-bottom: 32px;
+  }
+  .collection-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, min(45%, 418px));
+    align-items: start;
+    gap: 24px;
+    min-height: 138px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+  .collection-artist {
+    display: flex;
+    width: fit-content;
+    gap: 16px;
+    font-size: 16px;
+  }
+  .collection-intro h1 {
+    margin-top: 4px;
+    font-size: 32px;
+    line-height: 48px;
+  }
+  .collection-description {
+    margin-top: 6px;
+    line-height: 24px;
+  }
+  .collection-stats {
+    margin-top: 46px;
+    background: white;
+    text-align: left;
+  }
+  .collection-stats > div {
+    min-width: 0;
+    min-height: 90px;
+    gap: 0;
+    padding: 0;
+  }
+  .collection-stats dt {
+    padding: 12px 6px 0;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  .collection-stats dd {
+    align-self: end;
+    border-bottom: 1px solid;
+    padding: 0 6px 1px;
+  }
+  .collection-toolbar {
+    justify-content: flex-end;
+    margin-block: 40px;
+  }
+  .collection-toolbar select {
+    min-width: 128px;
+    min-height: 40px;
+  }
+  .collection-gallery.is-masonry :deep(.gallery-item) {
+    margin-bottom: 0;
+    padding-bottom: 47px;
+  }
+  .collection-gallery :deep(.art-hover) {
+    gap: 16px;
+    padding: 32px;
+  }
+  .collection-gallery :deep(.art-hover::after) {
+    position: absolute;
+    inset: 16px;
+    border: 1px solid rgb(255 255 255 / 60%);
+    content: "";
+  }
+  .collection-gallery :deep(.art-hover .more) {
+    min-width: min(132px, 100%);
   }
 }
 </style>

@@ -21,6 +21,15 @@ function relayout() {
   layout?.layout?.();
 }
 
+function watchSizes() {
+  observer?.disconnect();
+  if (!observer || !grid.value) return;
+  observer.observe(grid.value);
+  for (const item of grid.value.querySelectorAll(".gallery-item")) {
+    observer.observe(item, { box: "border-box" });
+  }
+}
+
 onMounted(async () => {
   mounted = true;
   const { default: MasonryLayout } = await import("masonry-layout");
@@ -35,7 +44,7 @@ onMounted(async () => {
     transitionDuration: 0,
   });
   observer = new ResizeObserver(relayout);
-  observer.observe(grid.value);
+  watchSizes();
 });
 
 watch(
@@ -43,6 +52,7 @@ watch(
   async () => {
     await nextTick();
     layout?.reloadItems?.();
+    watchSizes();
     relayout();
   },
 );

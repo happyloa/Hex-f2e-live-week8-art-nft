@@ -18,6 +18,12 @@ const coverRatios: Record<string, string> = {
   "tears-like-pearls": "258 / 174",
   "ten-more-minutes": "258 / 254",
   "do-i-look-good": "258 / 395",
+  "penguin-like": "258 / 254",
+  "two-birds": "258 / 327",
+  "bird-gathering": "258 / 254",
+  "joy-of-sharing": "258 / 254",
+  "metal-bird": "258 / 368",
+  "big-and-small": "258 / 395",
   "hurt-bird": "258 / 254",
 };
 </script>
@@ -44,7 +50,7 @@ const coverRatios: Record<string, string> = {
             sizes="(min-width: 1280px) 280px, (min-width: 768px) 29vw, 42vw"
           />
           <div
-            class="pointer-events-none absolute inset-0 hidden flex-col gap-3 bg-black/70 p-3 text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 sm:flex lg:p-4"
+            class="art-hover pointer-events-none absolute inset-0 hidden flex-col gap-3 bg-black/70 p-3 text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 sm:flex lg:p-4"
           >
             <p class="line-clamp-3 font-bold">{{ artwork.description }}</p>
             <p
@@ -56,7 +62,7 @@ const coverRatios: Record<string, string> = {
               }}
             </p>
             <span
-              class="more pointer-events-none mt-auto ml-auto hidden min-w-23! sm:inline-flex"
+              class="more pointer-events-none mt-auto ml-auto hidden sm:inline-flex"
               >MORE</span
             >
           </div>
@@ -76,6 +82,9 @@ const coverRatios: Record<string, string> = {
 <style scoped>
 .art-cover {
   aspect-ratio: var(--cover-ratio, auto);
+}
+.art-hover .more {
+  min-width: 92px;
 }
 @media (max-width: 767px) {
   .mobile-cover .art-cover {
